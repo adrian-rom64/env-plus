@@ -1,0 +1,47 @@
+{
+  "name": "env-plus",
+  "version": "0.1.0-alpha",
+  "description": "Modern package to manage and document evnironment variables with schemas",
+  "homepage": "TODO",
+  "author": "Adrian Romanowski",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adrian-rom64/env-plus.git"
+  },
+  "license": "ISC",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "jest --verbose",
+    "test:cov": "jest --verbose --coverage",
+    "test:watch": "jest --verbose --watchAll",
+    "build": "rm -rf dist && tsc",
+    "prepublish": "rm -rf dist && tsc"
+  },
+  "keywords": [
+    "env",
+    "config",
+    "configuration",
+    "documentation",
+    "docs",
+    "environment",
+    "variables",
+    "validation",
+    "decorator",
+    "typescript"
+  ],
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.5.1",
+    "@types/node": "^17.0.35",
+    "class-validator": "^0.13.2",
+    "jest": "^28.1.0",
+    "ts-jest": "^28.0.3",
+    "typescript": "^4.7.2"
+  }
+}
