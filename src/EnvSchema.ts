@@ -16,7 +16,6 @@ export const EnvSchema = (opts: EnvSchemaOptions = {}): ClassDecorator => {
       })
       .assignNestedObjects()
       .assignGetters()
-      .assignKey()
       .finish()
   }
 }

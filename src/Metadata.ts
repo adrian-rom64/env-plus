@@ -19,7 +19,6 @@ export interface SchemaMetadata {
 export class Metadata {
   static readonly METADATA_OBJECT_KEY = '_envmetadata'
 
-  public key: string
   public ready = false
   public properties: Record<string, PropertyMetadata> = {}
   public object: SchemaMetadata
@@ -69,13 +68,6 @@ export class Metadata {
         value: obj
       })
     }
-
-    return this
-  }
-
-  public assignKey() {
-    const rand = Math.random().toString(16).slice(2, 10)
-    this.key = `${this.parent.constructor.name}_${rand}`
 
     return this
   }

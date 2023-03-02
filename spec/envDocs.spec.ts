@@ -8,10 +8,10 @@ describe('EnvDocs', () => {
   })
 
   it('should generate env example', async () => {
-    await EnvManager.writeEnvExample(BasicExampleSchema, './tmp/.env.example')
+    await EnvManager.saveEnvExample(BasicExampleSchema, './tmp/.env.example')
   })
 
   it('should generate markdown table', async () => {
-    await EnvManager.writeMarkdownTable(BasicExampleSchema, './tmp/env.md')
+    await EnvManager.saveMarkdownTable(BasicExampleSchema, './tmp/env.md')
   })
 })

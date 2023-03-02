@@ -16,6 +16,7 @@ export const EnvProperty = (
 ): PropertyDecorator => {
   return (target: Object, propertyKey: string) => {
     const metadata = Metadata.forObject(target)
+
     const type = Reflect.getMetadata('design:type', target, propertyKey).name
 
     const props: PropertyMetadata = {

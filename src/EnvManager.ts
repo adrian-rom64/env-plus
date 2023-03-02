@@ -1,77 +1,58 @@
-import { writeFileSync } from 'fs'
-import { writeFile } from 'fs/promises'
+import { config as configure, DotenvConfigOptions } from 'dotenv'
 import { EnvExampleGenerator } from './EnvExampleGenerator'
 import { EnvMetadataMissingException } from './EnvExceptions'
 import { ClassRef } from './EnvInterfaces'
 import { EnvMarkdownGenerator } from './EnvMarkdownGenerator'
 import { Metadata } from './Metadata'
 
+export interface EnvManagerOptions {
+  dotenvOptions?: DotenvConfigOptions
+  skipDotenv?: boolean
+}
+
 export class EnvManager {
-  private static dynamicInstances: Record<string, any> = {}
-  private static plainInstances: Record<string, any> = {}
+  private static initialized = false
 
-  static async writeEnvExample(schema: ClassRef, path?: string) {
-    const instance = this.getDynamicInstance(schema)
-    const envExampleGenerator = new EnvExampleGenerator()
-
-    await envExampleGenerator.saveEnvExample(instance, path ?? '.env.example')
+  static saveEnvExample<B extends boolean = false>(
+    schema: Function,
+    path?: string,
+    sync?: B
+  ): B extends true ? void : Promise<void> {
+    return EnvExampleGenerator.saveEnvExample(
+      schema,
+      path ?? '.env.example',
+      sync ?? false
+    ) as any
   }
 
-  static writeEnvExampleSync(schema: ClassRef, path?: string) {
-    const instance = this.getDynamicInstance(schema)
-    const envExampleGenerator = new EnvExampleGenerator()
+  static saveMarkdownTable<B extends boolean = false>(
+    schema: Function,
+    path?: string,
+    sync?: B
+  ): B extends true ? void : Promise<void> {
+    const generator = new EnvMarkdownGenerator(schema)
 
-    envExampleGenerator.saveEnvExampleSync(instance, path ?? '.env.example')
+    return generator.saveMarkdownTable(path ?? 'env.md', sync ?? false) as any
   }
 
-  static async writeMarkdownTable(schema: ClassRef, path?: string) {
-    const instance = this.getDynamicInstance(schema)
-    const envMarkdownGenerator = new EnvMarkdownGenerator(instance)
+  static getDynamicInstance<T extends ClassRef>(
+    schema: T,
+    options?: EnvManagerOptions
+  ): InstanceType<T> {
+    this.initialize(options)
 
-    await writeFile(
-      path ?? 'env.md',
-      envMarkdownGenerator.generateTable(),
-      'utf8'
-    )
-  }
-
-  static writeMarkdownTableSync(schema: ClassRef, path?: string) {
-    const instance = this.getDynamicInstance(schema)
-    const envMarkdownGenerator = new EnvMarkdownGenerator(instance)
-
-    writeFileSync(
-      path ?? 'env.md',
-      envMarkdownGenerator.generateTable(),
-      'utf8'
-    )
-  }
-
-  static getDynamicInstance<T extends ClassRef>(schema: T): InstanceType<T> {
     const meta = Metadata.forObject(schema.prototype)
 
     if (!meta.ready) throw new EnvMetadataMissingException()
 
-    if (this.dynamicInstances[meta.key]) {
-      return this.dynamicInstances[meta.key]
-    }
-
-    this.dynamicInstances[meta.key] = new schema()
-
-    return this.dynamicInstances[meta.key]
+    return new schema()
   }
 
-  static getPlainInstance<T extends ClassRef>(schema: T): InstanceType<T> {
-    const meta = Metadata.forObject(schema.prototype)
-
-    if (this.plainInstances[meta.key]) {
-      return this.plainInstances[meta.key]
-    }
-
-    this.plainInstances[meta.key] = this.dynamicToPlain(
-      this.getDynamicInstance(schema)
-    )
-
-    return this.plainInstances[meta.key]
+  static getPlainInstance<T extends ClassRef>(
+    schema: T,
+    options?: EnvManagerOptions
+  ): InstanceType<T> {
+    return this.dynamicToPlain(this.getDynamicInstance(schema, options))
   }
 
   private static dynamicToPlain<T extends Record<string, any>>(instance: T): T {
@@ -87,5 +68,15 @@ export class EnvManager {
     }
 
     return obj as any
+  }
+
+  private static initialize(opts: EnvManagerOptions = {}) {
+    if (this.initialized) return
+
+    if (!opts.skipDotenv) {
+      configure(opts.dotenvOptions)
+    }
+
+    this.initialized = true
   }
 }

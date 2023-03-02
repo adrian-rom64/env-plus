@@ -1,3 +1,5 @@
+import { writeFileSync } from 'fs'
+import { writeFile } from 'fs/promises'
 import { Metadata, PropertyMetadata } from './Metadata'
 
 interface MaxColumnLengths {
@@ -12,8 +14,16 @@ export class EnvMarkdownGenerator {
   private max: MaxColumnLengths
   private meta: Metadata
 
-  constructor(target: Object) {
-    this.meta = Metadata.forObject(target)
+  constructor(schema: Function) {
+    this.meta = Metadata.forObject(schema.prototype)
+  }
+
+  saveMarkdownTable(path: string, sync: boolean) {
+    const table = this.generateTable()
+
+    const writeFunc = sync ? writeFileSync : writeFile
+
+    return writeFunc(path, table, 'utf8')
   }
 
   generateTable() {
