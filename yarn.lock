@@ -1210,6 +1210,13 @@ is-stream@^2.0.0:
   resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-2.0.1.tgz#fac1e3d53b97ad5a9d0ae9cef2389f5810a5c077"
   integrity sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==
 
+isc-license@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/isc-license/-/isc-license-1.0.3.tgz#d076fa0fd743570288ac6e446c7b8a738647240d"
+  integrity sha512-v+BtNfCZ3EjwVx98npTjue2MrZZMJ7py40qIGYzG9tyqyCo0u3pKrYBO8inKqU1AB9YBICGqIBdeBtIVGPlScA==
+  dependencies:
+    dedent "^0.7.0"
+
 isexe@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"

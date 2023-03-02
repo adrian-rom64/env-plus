@@ -1,10 +1,50 @@
+import { writeFileSync } from 'fs'
+import { writeFile } from 'fs/promises'
+import { EnvExampleGenerator } from './EnvExampleGenerator'
 import { EnvMetadataMissingException } from './EnvExceptions'
 import { ClassRef } from './EnvInterfaces'
+import { EnvMarkdownGenerator } from './EnvMarkdownGenerator'
 import { Metadata } from './Metadata'
 
 export class EnvManager {
   private static dynamicInstances: Record<string, any> = {}
   private static plainInstances: Record<string, any> = {}
+
+  static async writeEnvExample(schema: ClassRef, path?: string) {
+    const instance = this.getDynamicInstance(schema)
+    const envExampleGenerator = new EnvExampleGenerator()
+
+    await envExampleGenerator.saveEnvExample(instance, path ?? '.env.example')
+  }
+
+  static writeEnvExampleSync(schema: ClassRef, path?: string) {
+    const instance = this.getDynamicInstance(schema)
+    const envExampleGenerator = new EnvExampleGenerator()
+
+    envExampleGenerator.saveEnvExampleSync(instance, path ?? '.env.example')
+  }
+
+  static async writeMarkdownTable(schema: ClassRef, path?: string) {
+    const instance = this.getDynamicInstance(schema)
+    const envMarkdownGenerator = new EnvMarkdownGenerator(instance)
+
+    await writeFile(
+      path ?? 'env.md',
+      envMarkdownGenerator.generateTable(),
+      'utf8'
+    )
+  }
+
+  static writeMarkdownTableSync(schema: ClassRef, path?: string) {
+    const instance = this.getDynamicInstance(schema)
+    const envMarkdownGenerator = new EnvMarkdownGenerator(instance)
+
+    writeFileSync(
+      path ?? 'env.md',
+      envMarkdownGenerator.generateTable(),
+      'utf8'
+    )
+  }
 
   static getDynamicInstance<T extends ClassRef>(schema: T): InstanceType<T> {
     const meta = Metadata.forObject(schema.prototype)

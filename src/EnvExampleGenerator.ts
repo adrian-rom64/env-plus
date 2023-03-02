@@ -2,7 +2,7 @@ import { Metadata, PropertyMetadata } from './Metadata'
 import { writeFile } from 'fs/promises'
 import { writeFileSync } from 'fs'
 
-export class EnvDocs {
+export class EnvExampleGenerator {
   getEnvExampleContent(target: Object) {
     const meta = Metadata.forObject(target)
     return this.header + this.renderProperties(meta.properties)
