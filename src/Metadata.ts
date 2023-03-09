@@ -5,7 +5,7 @@ export interface PropertyMetadata {
   path: string
   type: string
   default?: string
-  optional: boolean
+  required: boolean
   example?: string
   description?: string
   transformer?: (value: string) => any
@@ -79,7 +79,7 @@ export class Metadata {
   public getValue(props: PropertyMetadata) {
     const value = this.object.source[this.getPath(props.path)] ?? props.default
 
-    if (!props.optional && value === undefined) {
+    if (props.required && value === undefined) {
       throw new EnvVariableMissingException(props.path)
     }
 

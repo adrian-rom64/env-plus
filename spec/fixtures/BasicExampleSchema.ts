@@ -26,7 +26,7 @@ export class BasicExampleSchema {
 
   @EnvProperty('BN', {
     description: 'Biiiiiig number',
-    optional: true,
+    required: false,
     example: '1000'
   })
   bn: bigint

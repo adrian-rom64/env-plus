@@ -5,7 +5,7 @@ import type { PropertyDecorator } from './EnvInterfaces'
 export interface EnvPropertyOptions {
   description?: string
   example?: string
-  optional?: boolean
+  required?: boolean
   default?: string
   transformer?: (value: string) => any
 }
@@ -23,7 +23,7 @@ export const EnvProperty = (
       path,
       type,
       default: opts.default,
-      optional: opts.optional ?? false,
+      required: opts.required ?? true,
       example: opts.example,
       description: opts.description,
       transformer: opts.transformer

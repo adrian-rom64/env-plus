@@ -36,7 +36,7 @@ export class EnvExampleGenerator {
   }
 
   private static renderProperty(props: PropertyMetadata) {
-    const required = props.default === undefined && !props.optional
+    const required = props.default === undefined && props.required
     const requiredStr = required ? '[REQUIRED]' : '[OPTIONAL]'
     const valueStr = props.example ?? ''
 

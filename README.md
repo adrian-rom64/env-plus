@@ -1,5 +1,7 @@
 # env-plus
 
+**This is work in progress. Api changes frequently**
+
 ## Getting started
 
 Run your favourite package manager

@@ -112,7 +112,7 @@ describe('Base', () => {
   it('should return undefined when no value and optional', () => {
     @EnvSchema({ source: {} })
     class Env {
-      @EnvProperty('MISSING', { optional: true })
+      @EnvProperty('MISSING', { required: false })
       num?: number
     }
 

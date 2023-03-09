@@ -68,7 +68,7 @@ export class EnvMarkdownGenerator {
     const colums = [
       p.path.padEnd(this.max.path),
       (p.description ?? '-').padEnd(this.max.description),
-      (p.optional ? 'no' : 'yes').padEnd(this.max.required),
+      (p.required ? 'yes' : 'no').padEnd(this.max.required),
       (p.example ?? '-').padEnd(this.max.example),
       (p.default ?? '-').padEnd(this.max.default)
     ]
